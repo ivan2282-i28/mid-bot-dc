@@ -19,7 +19,10 @@ public class ExpLeaders extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+        User commander = Main.DATABASE.getJdbi().withExtension(UsersDao.class, dao -> dao.findUserOrCreate(event.getMember.getIdLong()));
         if (!event.getInteraction().getCommandString().toLowerCase(Locale.ROOT).startsWith(UtilLang.PREFIX + "xpleaders") || !event.getChannel().getId().equals("941458443749978122"))
+            return;
+        if (!commander.getLevel() >= 10)
             return;
 
         EmbedBuilder eb = new EmbedBuilder();
